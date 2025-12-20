@@ -4,9 +4,9 @@ from __future__ import annotations
 import re
 from typing import Dict, Iterable, Optional
 
-from utils.semantic_encoder import get_semantic_similarity
-from utils.text_cleaner import clean_text
-from utils.skill_normalizer import score_skill_matches
+from layers.feature_extraction.semantic_encoder import get_semantic_similarity
+from layers.text_cleaning.text_cleaner import clean_text
+from layers.feature_extraction.skill_normalizer import score_skill_matches
 
 
 _DEGREE_KEYWORDS = {"bachelor", "master", "phd", "b.sc", "m.sc", "btech", "mtech", "mba"}

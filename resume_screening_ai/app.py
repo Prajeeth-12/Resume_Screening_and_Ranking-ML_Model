@@ -5,12 +5,12 @@ from typing import List, Sequence, Optional, Tuple
 import joblib
 import streamlit as st
 
-from utils.resume_parser import extract_text_from_pdf
-from utils.text_cleaner import clean_text
-from utils.matcher import compute_similarity
-from utils.feature_extractor import extract_features
-from utils.jd_builder import JOB_ROLE_CONFIG, ROLE_CATEGORIES, build_jd
-from utils.skill_normalizer import score_skill_matches
+from layers.input_layer.resume_parser import extract_text_from_pdf
+from layers.text_cleaning.text_cleaner import clean_text
+from layers.feature_extraction.matcher import compute_similarity
+from layers.feature_extraction.feature_extractor import extract_features
+from layers.feature_extraction.jd_builder import JOB_ROLE_CONFIG, ROLE_CATEGORIES, build_jd
+from layers.feature_extraction.skill_normalizer import score_skill_matches
 
 
 RANKER_PATH = Path("models/ranker.joblib")
@@ -130,8 +130,8 @@ def main() -> None:
 
     st.subheader("Ranked Candidates")
 
-    for entry in ranked:
-        st.markdown(f"### {entry['name']}")
+    for position, entry in enumerate(ranked, start=1):
+        st.markdown(f"### #{position} — {entry['name']}")
 
         st.write(f"Skill match %: {entry['skill_pct']:.1f}%")
         st.write(f"TF-IDF similarity: {entry['similarity']:.3f}")
@@ -146,14 +146,11 @@ def main() -> None:
 
         if entry.get("used_ranker"):
             st.metric("Final score (ML ranker)", f"{entry['final_score']:.2f}")
-            st.caption("Ranked higher due to learned weighting of semantic similarity, skills, experience, and education signals.")
         else:
             final_percent = entry["final_score"] * 100
             st.metric("Final score", f"{final_percent:.1f}%")
-            st.caption("Ranked by fallback TF-IDF similarity + skill coverage blend.")
 
-        with st.expander("View cleaned text"):
-            st.text_area("Cleaned Resume Text", value=entry["cleaned_text"], height=250)
+        # Removed cleaned text expander to simplify the layout.
 
 
 if __name__ == "__main__":
