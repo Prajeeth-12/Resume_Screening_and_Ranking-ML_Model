@@ -1,5 +1,9 @@
+pip>=25.3
+wheel>=0.38.0
+setuptools>=65.0
 streamlit==1.39.0
-spacy==3.7.2
+blis>=0.7.11,<0.8.0
+spacy>=3.7.0,<3.8.0
 pdfplumber==0.11.0
 scikit-learn==1.4.2
 pandas==2.1.4
